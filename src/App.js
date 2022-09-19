@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Header from './componets/Header';
 import Tasks from './componets/Tasks';
+import AddTask from './componets/AddTask';
 
 function App() {
-
+  const [showAddTask, setShowAddTask] = useState(false)
   const [tasks, setTasks] = useState([
     {
     id: 1,
@@ -17,6 +18,21 @@ function App() {
     reminder: false,
   }
 ])
+
+
+//Show Form
+const toggleForm = () => {
+  setShowAddTask(!showAddTask)
+}
+
+//Add Tast
+const addTask = (task) => {
+  const id = Math.floor(Math.random() * 10000) + 1;
+
+  const newTask = { id, ...task } 
+
+  setTasks([...tasks, newTask])
+}
 
 //Delete
 const deleteTask = (id) => {
@@ -32,7 +48,8 @@ const toggleReminder = (id) => {
 
   return (
     <div className="container">
-      <Header title='React Task Tracker'/>
+      <Header title='React Task Tracker' toggleForm={toggleForm} showAddTask={showAddTask}/>
+      {showAddTask && <AddTask onAdd={addTask}/>}
       {tasks.length > 0 ? 
         <Tasks
           tasks={tasks} 
